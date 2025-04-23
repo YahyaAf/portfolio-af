@@ -36,7 +36,9 @@ export default function Home() {
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   const scrollToSection = (sectionId) => {
@@ -79,37 +81,41 @@ export default function Home() {
             </nav>
 
             <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                aria-label="Toggle theme"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  {mounted &&
-                    (theme === "dark" ? (
+              {mounted && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  aria-label="Toggle theme"
+                  className="relative"
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    {theme === "dark" ? (
                       <motion.div
                         key="dark"
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 20, opacity: 0 }}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
+                        className="absolute inset-0 flex items-center justify-center"
                       >
                         <Sun className="h-5 w-5" />
                       </motion.div>
                     ) : (
                       <motion.div
                         key="light"
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: 20, opacity: 0 }}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
+                        className="absolute inset-0 flex items-center justify-center"
                       >
                         <Moon className="h-5 w-5" />
                       </motion.div>
-                    ))}
-                </AnimatePresence>
-              </Button>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              )}
 
               <div className="md:hidden">
                 <Button variant="ghost" size="icon" className="text-foreground">
@@ -130,20 +136,43 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
                 className="order-2 md:order-1"
               >
-                <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                  <span className="text-primary">Full-Stack</span> Web Developer
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8">
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.6 }}
+                  className="inline-block px-3 py-1 mb-4 text-sm font-medium bg-primary/10 text-primary rounded-full"
+                >
+                  Full-Stack Developer
+                </motion.span>
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="text-4xl md:text-6xl font-bold mb-4"
+                >
+                  Hi, I'm <span className="text-primary">Yahya</span> Afadisse
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                  className="text-xl text-muted-foreground mb-8"
+                >
                   Building clean, functional, and engaging web experiences.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Button onClick={() => scrollToSection("projects")} className="px-6">
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                  className="flex flex-wrap gap-4"
+                >
+                  <Button onClick={() => scrollToSection("projects")} className="px-6 rounded-full">
                     View Projects
                   </Button>
-                  <Button onClick={() => scrollToSection("contact")} variant="outline" className="px-6">
+                  <Button onClick={() => scrollToSection("contact")} variant="outline" className="px-6 rounded-full">
                     Contact Me
                   </Button>
-                </div>
+                </motion.div>
               </motion.div>
 
               <motion.div
@@ -153,6 +182,7 @@ export default function Home() {
                 className="order-1 md:order-2 flex justify-center"
               >
                 <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full z-10"></div>
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1094-1727859809.jpg-ZfUowYSVNXDlWmOQjQfbj9pkapZbFp.jpeg"
                     alt="Yahya Afadisse"
@@ -304,15 +334,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">Youdemy</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/youdemy.png"
+                    alt="Youdemy"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">Youdemy</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Laravel</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">MySQL</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">Youdemy</h3>
                   <p className="text-muted-foreground mb-4">
                     A Laravel-based platform for online courses. It includes course creation, admin controls, and a
                     user-friendly dashboard for students.
@@ -322,7 +363,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">MySQL</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Bootstrap</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/Youdemy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -335,15 +381,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">CreateCv</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/createcv.png"
+                    alt="CreateCv"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">CreateCv</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">JavaScript</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Tailwind</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">CreateCv</h3>
                   <p className="text-muted-foreground mb-4">
                     A web app that helps users create professional CVs. Fully dynamic with downloadable results.
                   </p>
@@ -352,7 +409,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">HTML/CSS</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Tailwind</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/CreateCv"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -365,15 +427,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">TakeUrTerrain</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/takeurterrain.png"
+                    alt="TakeUrTerrain"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">TakeUrTerrain</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Laravel</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">JavaScript</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">TakeUrTerrain</h3>
                   <p className="text-muted-foreground mb-4">
                     Field reservation system for sports like football, basketball, and tennis. Lets users book time
                     slots and view availability.
@@ -383,7 +456,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">MySQL</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">JavaScript</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/TakeUrTerrain"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -396,15 +474,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">HRMS</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/hrms.png"
+                    alt="HRMS"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">HRMS</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Laravel</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">React</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">HRMS</h3>
                   <p className="text-muted-foreground mb-4">
                     A Human Resource Management System. Manage employees, salaries, and departments efficiently.
                   </p>
@@ -413,7 +502,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">MySQL</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">React</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/hrms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -426,15 +520,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">udeconnect</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/udeconnect.png"
+                    alt="udeconnect"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">udeconnect</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Laravel</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">React</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">udeconnect</h3>
                   <p className="text-muted-foreground mb-4">
                     An e-learning platform built with Laravel + React. Features course creation, user login, and clean
                     UX.
@@ -444,7 +549,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">React</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">MySQL</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/udeconnect"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -457,15 +567,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">ToDoList</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/todolist.png"
+                    alt="ToDoList"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">ToDoList</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">JavaScript</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Bootstrap</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">ToDoList</h3>
                   <p className="text-muted-foreground mb-4">
                     A to-do app made with Bootstrap and JavaScript for managing daily tasks.
                   </p>
@@ -474,7 +595,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Bootstrap</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">HTML/CSS</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/ToDoList"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -487,15 +613,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">FutChampions</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/futchampions.png"
+                    alt="FutChampions"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">FutChampions</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">HTML5</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">JavaScript</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">FutChampions</h3>
                   <p className="text-muted-foreground mb-4">
                     A football tournament tracker. Users can view rankings and manage matches between friends.
                   </p>
@@ -504,7 +641,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Tailwind CSS</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">JavaScript</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/FutChampions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
@@ -517,15 +659,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
+                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">FAKHAR.ma</span>
+                <div className="h-48 relative overflow-hidden">
+                  <Image
+                    src="/images/fakhar.png"
+                    alt="FAKHAR.ma"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-white mb-1">FAKHAR.ma</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">Laravel</span>
+                        <span className="px-2 py-1 bg-primary/80 text-white rounded-md text-xs">React</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">FAKHAR.ma</h3>
                   <p className="text-muted-foreground mb-4">
                     A modern e-commerce site with product management, cart, admin panel, and smooth user flow.
                   </p>
@@ -536,71 +689,12 @@ export default function Home() {
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Tailwind CSS</span>
                     <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">REST API</span>
                   </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
-                    <Github className="h-4 w-4 mr-2" />
-                    View on GitHub
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* Project 9 - FUT Champions (from CV) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-                viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
-              >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">FUT Champions</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">FUT Champions (Detailed)</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Application for managing and evaluating football players. Features player registration, dynamic
-                    rating system, and tactical formation placement.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">HTML5</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Tailwind CSS</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">JavaScript</span>
-                  </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
-                    <Github className="h-4 w-4 mr-2" />
-                    View on GitHub
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* Project 10 - FAKHAR.ma (from CV) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.9 }}
-                viewport={{ once: true }}
-                className="bg-card rounded-xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
-              >
-                <div className="h-48 bg-gradient-to-r from-primary/20 to-primary/10 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-primary">FAKHAR.ma (Detailed)</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">FAKHAR.ma (Detailed)</h3>
-                  <p className="text-muted-foreground mb-4">
-                    E-commerce platform with robust CRUD system, interactive UI, RESTful API integration, and relational
-                    database for managing users, orders, and products.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Laravel</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">MySQL</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">React.js</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">Tailwind CSS</span>
-                    <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs">REST API</span>
-                  </div>
-                  <Link href="#" className="text-primary hover:underline inline-flex items-center">
+                  <Link
+                    href="https://github.com/YahyaAf/FAKHAR.ma"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline inline-flex items-center"
+                  >
                     <Github className="h-4 w-4 mr-2" />
                     View on GitHub
                   </Link>
